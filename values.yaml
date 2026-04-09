@@ -1,26 +1,26 @@
 components:
   flagd:
     enabled: true
-    customConfig: |
-      {
-        "$schema": "https://flagd.dev/schema/v0/flags.json",
-        "flags": {
-          "adFailure": {
-            "defaultVariant": "off",
-            "state": "ENABLED",
-            "variants": { "off": false, "on": true }
-          },
-          "paymentFailure": {
-            "defaultVariant": "off",
-            "state": "ENABLED",
-            "variants": {
-              "10%": 0.1,
-              "100%": 1,
-              "off": 0
-            }
+    config: |
+    {
+      "$schema": "https://flagd.dev/schema/v0/flags.json",
+      "flags": {
+        "adFailure": {
+          "defaultVariant": "off",
+          "state": "ENABLED",
+          "variants": { "off": false, "on": true }
+        },
+        "paymentFailure": {
+          "defaultVariant": "off",
+          "state": "ENABLED",
+          "variants": {
+            "10%": 0.1,
+            "100%": 1,
+            "off": 0
           }
         }
       }
+    }
   frontend-proxy:
     enabled: true
     service:
