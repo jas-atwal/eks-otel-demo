@@ -1,7 +1,7 @@
 components:
   flagd:
     enabled: true
-    defaultConfig: '{"flags": {"adFailure": {"defaultVariant": "off", "state": "ENABLED", "variants": {"off": false, "on": true}}}}'
+    config: '{"flags": {"adFailure": {"defaultVariant": "off", "state": "ENABLED", "variants": {"off": false, "on": true}}}}'
   frontend-proxy:
     enabled: true
     service:
