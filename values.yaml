@@ -1,25 +1,6 @@
 components:
   flagd:
     enabled: true
-    envOverrides: []
-    config:
-      create: true
-      data:
-        demo.flagd.json: |
-          {
-            "flags": {
-              "adFailure": {
-                "defaultVariant": "off",
-                "state": "ENABLED",
-                "variants": { "off": false, "on": true }
-              },
-              "adServiceFailure": {
-                "defaultVariant": "off",
-                "state": "ENABLED",
-                "variants": { "off": false, "on": true }
-              }
-            }
-          }
   frontend-proxy:
     enabled: true
     service:
@@ -30,6 +11,19 @@ components:
         memory: 160Mi
   llm:
     enabled: false
+
+flagd:
+  config:
+    demo.flagd.json: |
+      {
+        "flags": {
+          "adFailure": {
+            "defaultVariant": "off",
+            "state": "ENABLED",
+            "variants": { "off": false, "on": true }
+          }
+        }
+      }
 
 grafana:
   enabled: false
