@@ -1,7 +1,7 @@
 components:
   flagd:
     enabled: true
-  frontendProxy:
+  frontend-proxy:
     enabled: true
     service:
       type: LoadBalancer
