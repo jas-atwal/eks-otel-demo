@@ -2,15 +2,15 @@ components:
   flagd:
     enabled: true
     config: |
-    {
-      "flags": {
-        "adFailure": {
-          "defaultVariant": "off",
-          "state": "ENABLED",
-          "variants": { "off": false, "on": true }
+      {
+        "flags": {
+          "adFailure": {
+            "defaultVariant": "off",
+            "state": "ENABLED",
+            "variants": { "off": false, "on": true }
+          }
         }
       }
-    }
   frontend-proxy:
     enabled: true
     service:
