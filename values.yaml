@@ -52,11 +52,22 @@ components:
   # # Step 2: frontend fails to load product pages - returns errors to users
   # # Step 3: checkout can't retrieve product details - order flow breaks
   # # Step 4: recommendation service can't fetch products - returns errors
+  # # Step 5: Let LOCUST the loadgen do the work
 
   product-catalog:
     resources:
       limits:
         memory: 8Mi   # default is ~200Mi, this will OOMKill quickly
+
+  loadgenerator:
+    resources:
+      limits:
+        memory: 256Mi   # give it more headroom to run more workers
+    envOverrides:
+      - name: LOCUST_USERS
+        value: "200"     # default is usually 10-20
+      - name: LOCUST_SPAWN_RATE
+        value: "20"      # users spawned per second
 
 ######################################################################
 ################## END OF FAILURE SCENARIOS ##########################
