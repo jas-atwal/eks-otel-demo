@@ -1,0 +1,33 @@
+name: Trigger Failure Scenario
+
+on:
+  workflow_dispatch:
+    inputs:
+      scenario:
+        description: 'Scenario to trigger'
+        required: true
+        type: choice
+        options:
+          - oomkill-productcatalog
+          - kafka-cascade
+          - cpu-throttle-adservice
+          - crashloop-frontend
+          - baseline
+
+jobs:
+  trigger:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Apply scenario
+        run: |
+          cp scenarios/${{ github.event.inputs.scenario }}.yaml values.yaml
+
+      - name: Commit and push
+        run: |
+          git config user.name "Demo Bot"
+          git config user.email "demo@bot.com"
+          git add values.yaml
+          git commit -m "scenario: activate ${{ github.event.inputs.scenario }}"
+          git push origin main
