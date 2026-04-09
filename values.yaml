@@ -10,16 +10,16 @@ components:
       limits:
         memory: 160Mi
 
-    # SCENARIO: OOMKill cart service
+    # SCENARIO 1: OOMKill cart service
       limits:
         memory: 20Mi
 
-  # SCENARIO: Bad image tag - ImagePullBackOff on recommendation service  
+  # SCENARIO 2: Bad image tag - ImagePullBackOff on recommendation service  
   # recommendationservice:
-  #   imageOverride:
-  #     tag: "broken-tag-does-not-exist"
+    imageOverride:
+      tag: "broken-tag-does-not-exist"
 
-  # SCENARIO: CPU throttling on ad service
+  # SCENARIO 3: CPU throttling on ad service
   # adservice:
   #   resources:
   #     limits:
@@ -27,7 +27,7 @@ components:
   #     requests:
   #       cpu: "10m"
 
-  # SCENARIO: Bad liveness probe - CrashLoopBackOff on frontend
+  # SCENARIO 4: Bad liveness probe - CrashLoopBackOff on frontend
   # frontend:
   #   livenessProbe:
   #     httpGet:
@@ -37,7 +37,7 @@ components:
   #     periodSeconds: 5
   #     failureThreshold: 3
 
-  # SCENARIO: Wrong env var - checkout can't reach shipping service
+  # SCENARIO 5: Wrong env var - checkout can't reach shipping service
   # checkout:
   #   envOverrides:
   #     - name: SHIPPING_SERVICE_ADDR
