@@ -1,38 +1,28 @@
 components:
 flagd:
     enabled: true
-    # Use the pipe symbol to handle the JSON block safely
     defaultConfig: |
       {
         "$schema": "https://flagd.dev/schema/v0/flags.json",
         "flags": {
           "adFailure": {
             "defaultVariant": "off",
-            "description": "Fail ad service",
             "state": "ENABLED",
-            "variants": {
-              "off": false,
-              "on": true
-            }
-          },
-          "adHighCpu": {
-            "defaultVariant": "off",
-            "description": "Triggers high cpu load in the ad service",
-            "state": "ENABLED",
-            "variants": {
-              "off": false,
-              "on": true
-            }
+            "variants": { "off": false, "on": true }
           },
           "paymentFailure": {
             "defaultVariant": "off",
-            "description": "Fail payment service charge requests n%",
             "state": "ENABLED",
             "variants": {
               "10%": 0.1,
               "100%": 1,
               "off": 0
             }
+          },
+          "recommendationCacheFailure": {
+            "defaultVariant": "off",
+            "state": "ENABLED",
+            "variants": { "off": false, "on": true }
           }
         }
       }
