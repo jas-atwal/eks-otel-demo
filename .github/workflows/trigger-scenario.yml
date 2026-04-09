@@ -8,11 +8,14 @@ on:
         required: true
         type: choice
         options:
-          - oomkill-productcatalog
+          - oomkilled-productcatalog  # Matched to your actual filename
           - kafka-cascade
           - cpu-throttle-adservice
           - crashloop-frontend
           - baseline
+
+permissions:
+  contents: write
 
 jobs:
   trigger:
@@ -22,12 +25,14 @@ jobs:
 
       - name: Apply scenario
         run: |
+          # The filename must exist in the scenarios/ folder exactly as written above
           cp scenarios/${{ github.event.inputs.scenario }}.yaml values.yaml
 
       - name: Commit and push
         run: |
-          git config user.name "Demo Bot"
-          git config user.email "demo@bot.com"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add values.yaml
-          git commit -m "scenario: activate ${{ github.event.inputs.scenario }}"
+          # This '|| echo' trick prevents failure if there is nothing new to commit
+          git commit -m "scenario: activate ${{ github.event.inputs.scenario }}" || echo "No changes to commit"
           git push origin main
