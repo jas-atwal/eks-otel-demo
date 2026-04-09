@@ -53,7 +53,7 @@ components:
   # # Step 3: checkout can't retrieve product details - order flow breaks
   # # Step 4: recommendation service can't fetch products - returns errors
 
-  productCatalog:
+  product-catalog:
     resources:
       limits:
         memory: 20Mi   # default is ~200Mi, this will OOMKill quickly
