@@ -1,16 +1,6 @@
 components:
   flagd:
     enabled: true
-    customConfig: |
-      {
-        "flags": {
-          "adFailure": {
-            "defaultVariant": "off",
-            "state": "ENABLED",
-            "variants": { "off": false, "on": true }
-          }
-        }
-      }
   frontend-proxy:
     enabled: true
     service:
@@ -21,6 +11,19 @@ components:
         memory: 160Mi
   llm:
     enabled: false
+
+opentelemetry-demo:
+  flagd:
+    config: |
+      {
+        "flags": {
+          "adFailure": {
+            "defaultVariant": "off",
+            "state": "ENABLED",
+            "variants": { "off": false, "on": true }
+          }
+        }
+      }
 
 grafana:
   enabled: false
