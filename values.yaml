@@ -59,7 +59,7 @@ components:
       limits:
         memory: 8Mi   # default is ~200Mi, this will OOMKill quickly
 
-  loadgenerator:
+  load-generator:
     resources:
       limits:
         memory: 256Mi   # give it more headroom to run more workers
