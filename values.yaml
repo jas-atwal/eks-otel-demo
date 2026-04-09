@@ -1,6 +1,25 @@
 components:
-  flagd:
+flagd:
     enabled: true
+    # This allows you to pass the raw JSON configuration directly
+    defaultConfig: 
+      # Paste your JSON here, indented correctly
+      flags:
+        adFailure:
+          defaultVariant: "off"
+          description: "Fail ad service"
+          state: "ENABLED"
+          variants:
+            off: false
+            on: true
+        adHighCpu:
+          defaultVariant: "off"
+          description: "Triggers high cpu load in the ad service"
+          state: "ENABLED"
+          variants:
+            off: false
+            on: true
+        # ... Add the rest of your flags here following this indentation ...
   frontend-proxy:
     enabled: true
     service:
