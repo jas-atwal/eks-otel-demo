@@ -12,19 +12,6 @@ components:
   llm:
     enabled: false
 
-flagd:
-  config:
-    demo.flagd.json: |
-      {
-        "flags": {
-          "adFailure": {
-            "defaultVariant": "off",
-            "state": "ENABLED",
-            "variants": { "off": false, "on": true }
-          }
-        }
-      }
-
 grafana:
   enabled: false
 jaeger:
