@@ -10,48 +10,57 @@ components:
       limits:
         memory: 160Mi
 
-    # SCENARIO 1: OOMKill cart service
-      limits:
-        memory: 20Mi
+######################################################################
+################## START OF FAILURE SCENARIOS ########################
+######################################################################
 
-  # SCENARIO 2: Bad image tag - ImagePullBackOff on recommendation service  
-  recommendation:
-    imageOverride:
-      tag: "broken-tag-does-not-exist"
+  #   # SCENARIO 1: OOMKill cart service
+  #     limits:
+  #       memory: 20Mi
 
-  # SCENARIO 3: CPU throttling on ad service
-  ad:
+  # # SCENARIO 2: Bad image tag - ImagePullBackOff on recommendation service  
+  # recommendation:
+  #   imageOverride:
+  #     tag: "broken-tag-does-not-exist"
+
+  # # SCENARIO 3: CPU throttling on ad service
+  # ad:
+  #   resources:
+  #     limits:
+  #       cpu: "10m"
+  #     requests:
+  #       cpu: "10m"
+
+  # # SCENARIO 4: Bad liveness probe - CrashLoopBackOff on frontend
+  # frontend:
+  #   livenessProbe:
+  #     httpGet:
+  #       path: /this-does-not-exist
+  #       port: 8080
+  #     initialDelaySeconds: 10
+  #     periodSeconds: 5
+  #     failureThreshold: 3
+
+  # # SCENARIO 5: Wrong env var - checkout can't reach shipping service
+  # checkout:
+  #   envOverrides:
+  #     - name: SHIPPING_SERVICE_ADDR
+  #       value: "wrong-host:99999"
+
+    # # SCENARIO: Cascading failure - productCatalog OOMKill → frontend + checkout + recommendation degrade
+  # # Step 1: productCatalog OOMKills due to memory limit too low
+  # # Step 2: frontend fails to load product pages - returns errors to users
+  # # Step 3: checkout can't retrieve product details - order flow breaks
+  # # Step 4: recommendation service can't fetch products - returns errors
+
+  productCatalog:
     resources:
       limits:
-        cpu: "10m"
-      requests:
-        cpu: "10m"
+        memory: 20Mi   # default is ~200Mi, this will OOMKill quickly
 
-  # SCENARIO 4: Bad liveness probe - CrashLoopBackOff on frontend
-  frontend:
-    livenessProbe:
-      httpGet:
-        path: /this-does-not-exist
-        port: 8080
-      initialDelaySeconds: 10
-      periodSeconds: 5
-      failureThreshold: 3
-
-  # SCENARIO 5: Wrong env var - checkout can't reach shipping service
-  checkout:
-    envOverrides:
-      - name: SHIPPING_SERVICE_ADDR
-        value: "wrong-host:99999"
-
-    # SCENARIO: Cascading failure - Kafka OOMKill → accounting + fraud detection starved
-  # Step 1: Kafka OOMKills due to memory limit too low
-  # Step 2: Messages stop flowing to accounting and fraud detection
-  # Step 3: Both services stall silently - no crashes, just stopped processing
-
-  kafka:
-    resources:
-      limits:
-        memory: 100Mi   # default is ~600Mi, this will OOMKill quickly
+######################################################################
+################## END OF FAILURE SCENARIOS ##########################
+######################################################################
   
   llm:
     enabled: false
