@@ -22,8 +22,6 @@ spec:
         components:
           flagd:
             enabled: true
-            service:
-              type: LoadBalancer
           frontend-proxy:
             enabled: true
             service:
