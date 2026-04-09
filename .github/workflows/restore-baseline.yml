@@ -1,0 +1,22 @@
+components:
+  flagd:
+    enabled: true
+  frontend-proxy:
+    enabled: true
+    service:
+      type: LoadBalancer
+  cart:
+    resources:
+      limits:
+        memory: 160Mi
+  llm:
+    enabled: false
+
+grafana:
+  enabled: false
+jaeger:
+  enabled: false
+opentelemetry-collector:
+  enabled: true
+opensearch:
+  enabled: false
