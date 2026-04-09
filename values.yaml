@@ -42,6 +42,16 @@ components:
     envOverrides:
       - name: SHIPPING_SERVICE_ADDR
         value: "wrong-host:99999"
+
+    # SCENARIO: Cascading failure - Kafka OOMKill → accounting + fraud detection starved
+  # Step 1: Kafka OOMKills due to memory limit too low
+  # Step 2: Messages stop flowing to accounting and fraud detection
+  # Step 3: Both services stall silently - no crashes, just stopped processing
+
+  kafka:
+    resources:
+      limits:
+        memory: 100Mi   # default is ~600Mi, this will OOMKill quickly
   
   llm:
     enabled: false
