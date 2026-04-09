@@ -1,12 +1,19 @@
 components:
   flagd:
     enabled: true
-    extraEnvVars:
-      - name: FLAGD_VALUES_INLINE
-        value: |
+    envOverrides: []
+    config:
+      create: true
+      data:
+        demo.flagd.json: |
           {
             "flags": {
               "adFailure": {
+                "defaultVariant": "off",
+                "state": "ENABLED",
+                "variants": { "off": false, "on": true }
+              },
+              "adServiceFailure": {
                 "defaultVariant": "off",
                 "state": "ENABLED",
                 "variants": { "off": false, "on": true }
