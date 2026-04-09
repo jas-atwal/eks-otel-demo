@@ -1,22 +1,21 @@
-components:
-  flagd:
-    enabled: true
-  frontend-proxy:
-    enabled: true
-    service:
-      type: LoadBalancer
-  cart:
-    resources:
-      limits:
-        memory: 160Mi
-  llm:
-    enabled: false
+name: Restore Baseline
 
-grafana:
-  enabled: false
-jaeger:
-  enabled: false
-opentelemetry-collector:
-  enabled: true
-opensearch:
-  enabled: false
+on:
+  workflow_dispatch:
+
+jobs:
+  restore:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Restore baseline values
+        run: cp scenarios/baseline.yaml values.yaml
+
+      - name: Commit and push
+        run: |
+          git config user.name "Demo Bot"
+          git config user.email "demo@bot.com"
+          git add values.yaml
+          git commit -m "restore: baseline healthy state"
+          git push origin main
