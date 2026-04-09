@@ -56,7 +56,7 @@ components:
   product-catalog:
     resources:
       limits:
-        memory: 20Mi   # default is ~200Mi, this will OOMKill quickly
+        memory: 8Mi   # default is ~200Mi, this will OOMKill quickly
 
 ######################################################################
 ################## END OF FAILURE SCENARIOS ##########################
