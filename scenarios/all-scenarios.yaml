@@ -51,12 +51,6 @@ components:
       - name: AD_SERVICE_DB_URL
         value: "postgres://wrong-db:5432/ads"
 
-  # SCENARIO: RBAC / Permission Denied - Assign a service account that doesn't exist or has no roles
-  payment:
-    serviceAccount:
-      create: true
-      name: "restricted-no-permissions-account"
-
   # SCENARIO: Network Latency / Slow Response - flagd is great for this if supported, or via env vars
   product-catalog:
     envOverrides:
