@@ -5,7 +5,7 @@ components:
         cpu: "2000m" # Request 2 full cores
       limits:
         cpu: "4000m" # Allow it to burst and "steal" from neighbors
-    extraEnvVars:
+    envOverrides:
       - name: CPU_HOG_ENABLED
         value: "true"
   flagd:
