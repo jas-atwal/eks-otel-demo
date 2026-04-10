@@ -18,6 +18,7 @@ on:
           - rbac-payment
           - network-latency-product-catalog
           - security-policy-violation
+          - noisy-neighbour-recommendation
           - all-scenarios
           - baseline
 
