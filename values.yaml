@@ -1,17 +1,4 @@
 components:
-  recommendation:
-    resources:
-      requests:
-        cpu: "2000m"
-      limits:
-        cpu: "4000m"
-    command:
-      - "/bin/sh"
-      - "-c"
-      - "yes > /dev/null & yes > /dev/null & python recommendation_server.py"
-    envOverrides:
-      - name: CPU_HOG_ENABLED
-        value: "true"
   flagd:
     enabled: true
   frontend-proxy:
