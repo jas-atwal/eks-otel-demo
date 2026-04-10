@@ -3,6 +3,12 @@ components:
     enabled: true
     service:
       type: LoadBalancer
+  
+  # SCENARIO: Cascading failures product-caralog service - affects frontend, checkout, recommendation, ad services
+  product-catalog:
+  resources:
+    limits:
+      memory: 8Mi
 
   # SCENARIO: OOMKill cart service
   cart:
@@ -23,7 +29,7 @@ components:
       requests:
         cpu: "10m"
 
-  # SCENARIO: Bad liveness probe - CrashLoopBackOff on frontend
+  # SCENARIO: Bad liveness probe - CrashLoopBackOff on frontend service
   frontend:
     livenessProbe:
       httpGet:
