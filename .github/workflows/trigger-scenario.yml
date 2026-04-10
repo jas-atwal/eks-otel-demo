@@ -15,7 +15,7 @@ on:
           - livenessprobe-frontend
           - wrong-envvar-checkout
           - dbconn-ad
-          - noisy-neighbor-recommendation
+          - noisy-neighbour-recommedation
           - all-scenarios
           - baseline
 
