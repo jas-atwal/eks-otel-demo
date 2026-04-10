@@ -1,6 +1,6 @@
 components:
   ad:
-    extraEnvVars:
+    envOverrides:
       - name: AD_SERVICE_DB_URL
         value: "postgres://wrong-db:5432/ads"
   flagd:
