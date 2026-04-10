@@ -15,9 +15,6 @@ on:
           - livenessprobe-frontend
           - wrong-envvar-checkout
           - dbconn-ad
-          - network-latency-product-catalog
-          - security-policy-violation
-          - noisy-neighbour-recommendation
           - all-scenarios
           - baseline
 
