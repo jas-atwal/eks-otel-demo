@@ -38,6 +38,30 @@ components:
     envOverrides:
       - name: SHIPPING_SERVICE_ADDR
         value: "wrong-host:99999"
+  
+  # SCENARIO: Database Connection Failure - Point the adservice to a DB that doesn't exist
+  adservice:
+    extraEnvVars:
+      - name: AD_SERVICE_DB_URL
+        value: "postgres://wrong-db:5432/ads"
+
+  # SCENARIO: RBAC / Permission Denied - Assign a service account that doesn't exist or has no roles
+  paymentservice:
+    serviceAccount:
+      create: true
+      name: "restricted-no-permissions-account"
+
+  # SCENARIO: Network Latency / Slow Response - flagd is great for this if supported, or via env vars
+  productcatalogservice:
+    extraEnvVars:
+      - name: EXTRA_LATENCY
+        value: "5000ms"
+
+  # SCENARIO: Security Policy Violation - Attempt to run a container as root/privileged
+  emailservice:
+    securityContext:
+      privileged: true
+      runAsUser: 0
 
   llm:
     enabled: false
