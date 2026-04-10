@@ -1,0 +1,31 @@
+components:
+  recommendation:
+    resources:
+      requests:
+        cpu: "2000m" # Request 2 full cores
+      limits:
+        cpu: "4000m" # Allow it to burst and "steal" from neighbors
+    extraEnvVars:
+      - name: CPU_HOG_ENABLED
+        value: "true"
+  flagd:
+    enabled: true
+  frontend-proxy:
+    enabled: true
+    service:
+      type: LoadBalancer
+  cart:
+    resources:
+      limits:
+        memory: 160Mi
+  llm:
+    enabled: false
+
+grafana:
+  enabled: false
+jaeger:
+  enabled: false
+opentelemetry-collector:
+  enabled: true
+opensearch:
+  enabled: false
