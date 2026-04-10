@@ -1,8 +1,4 @@
 components:
-  productCatalog:
-    resources:
-      limits:
-        memory: 8Mi
   flagd:
     enabled: true
   frontend-proxy:
