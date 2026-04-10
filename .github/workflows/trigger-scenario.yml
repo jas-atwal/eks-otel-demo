@@ -8,10 +8,12 @@ on:
         required: true
         type: choice
         options:
-          - oomkilled-productcatalog  # Matched to your actual filename
-          - kafka-cascade
-          - cpu-throttle-adservice
-          - crashloop-frontend
+          - cascading-productcatalog  # Matched to your actual filename
+          - oomkilled-cart
+          - imagepull-reccomendation
+          - cpu-throttling-ad
+          - livenessprobe-frontend
+          - wrongenv-shippping
           - baseline
 
 permissions:
