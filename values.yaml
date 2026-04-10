@@ -1,8 +1,8 @@
 components:
-  ad:
-    envOverrides:
-      - name: AD_SERVICE_DB_URL
-        value: "postgres://wrong-db:5432/ads"
+  payment:
+    serviceAccount:
+      create: true
+      name: "restricted-no-permissions-account"
   flagd:
     enabled: true
   frontend-proxy:
