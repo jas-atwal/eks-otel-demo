@@ -1,8 +1,8 @@
 components:
-  payment:
-    serviceAccount:
-      create: true
-      name: "restricted-no-permissions-account"
+  product-catalog:
+    envOverrides:
+      - name: EXTRA_LATENCY
+        value: "5000ms"
   flagd:
     enabled: true
   frontend-proxy:
