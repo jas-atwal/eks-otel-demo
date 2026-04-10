@@ -3,19 +3,26 @@ name: Restore Baseline
 on:
   workflow_dispatch:
 
+permissions:
+  contents: write
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   restore:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5  # Updated to v5
 
       - name: Restore baseline values
         run: cp scenarios/baseline.yaml values.yaml
 
       - name: Commit and push
         run: |
-          git config user.name "Demo Bot"
-          git config user.email "demo@bot.com"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add values.yaml
-          git commit -m "restore: baseline healthy state"
+          # The '|| echo' prevents the 128 error if there are no changes to commit
+          git commit -m "restore: baseline healthy state" || echo "No changes to commit"
           git push origin main
