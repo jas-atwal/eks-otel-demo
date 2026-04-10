@@ -1,0 +1,28 @@
+components:
+  adservice:
+    resources:
+      limits:
+        cpu: "10m"
+      requests:
+        cpu: "10m"
+  flagd:
+    enabled: true
+  frontend-proxy:
+    enabled: true
+    service:
+      type: LoadBalancer
+  cart:
+    resources:
+      limits:
+        memory: 160Mi
+  llm:
+    enabled: false
+
+grafana:
+  enabled: false
+jaeger:
+  enabled: false
+opentelemetry-collector:
+  enabled: true
+opensearch:
+  enabled: false
