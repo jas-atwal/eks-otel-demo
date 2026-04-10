@@ -15,7 +15,6 @@ on:
           - livenessprobe-frontend
           - wrong-envvar-checkout
           - dbconn-ad
-          - rbac-payment
           - network-latency-product-catalog
           - security-policy-violation
           - noisy-neighbour-recommendation
