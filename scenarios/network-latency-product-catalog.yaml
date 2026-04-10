@@ -1,6 +1,6 @@
 components:
   product-catalog:
-    extraEnvVars:
+    envOverrides:
       - name: EXTRA_LATENCY
         value: "5000ms"
   flagd:
