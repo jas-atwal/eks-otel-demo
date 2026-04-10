@@ -51,6 +51,18 @@ components:
       - name: AD_SERVICE_DB_URL
         value: "postgres://wrong-db:5432/ads"
 
+  # SCENARIO: Noisy Neighbor - recommendation hogs CPU starving other pods on same node
+  recommendation:
+    resources:
+      requests:
+        cpu: "2000m"
+      limits:
+        cpu: "4000m"
+    command:
+      - "/bin/sh"
+      - "-c"
+      - "yes > /dev/null & yes > /dev/null & python recommendation_server.py"
+
   llm:
     enabled: false
 
