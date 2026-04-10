@@ -1,0 +1,33 @@
+    # SCENARIO: OOMKill cart service
+    # resources:
+    #   limits:
+    #     memory: 20Mi
+
+  # SCENARIO: Bad image tag - ImagePullBackOff on recommendation service  
+  # recommendationservice:
+  #   imageOverride:
+  #     tag: "broken-tag-does-not-exist"
+
+  # SCENARIO: CPU throttling on ad service
+  # adservice:
+  #   resources:
+  #     limits:
+  #       cpu: "10m"
+  #     requests:
+  #       cpu: "10m"
+
+  # SCENARIO: Bad liveness probe - CrashLoopBackOff on frontend
+  # frontend:
+  #   livenessProbe:
+  #     httpGet:
+  #       path: /this-does-not-exist
+  #       port: 8080
+  #     initialDelaySeconds: 10
+  #     periodSeconds: 5
+  #     failureThreshold: 3
+
+  # SCENARIO: Wrong env var - checkout can't reach shipping service
+  # checkout:
+  #   envOverrides:
+  #     - name: SHIPPING_SERVICE_ADDR
+  #       value: "wrong-host:99999"
