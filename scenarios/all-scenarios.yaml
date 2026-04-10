@@ -51,29 +51,6 @@ components:
       - name: AD_SERVICE_DB_URL
         value: "postgres://wrong-db:5432/ads"
 
-  # SCENARIO: Network Latency / Slow Response - flagd is great for this if supported, or via env vars
-  product-catalog:
-    envOverrides:
-      - name: EXTRA_LATENCY
-        value: "5000ms"
-
-  # SCENARIO: Security Policy Violation - Attempt to run a container as root/privileged
-  email:
-    securityContext:
-      privileged: true
-      runAsUser: 0
-
-  # SCENARIO: Noisy Neighbor (CPU Hog) - Set high requests and no limits to allow it to "hog" the node
-  recommendationservice:
-    resources:
-      requests:
-        cpu: "2000m" # Request 2 full cores
-      limits:
-        cpu: "4000m" # Allow it to burst and "steal" from neighbors
-    envOverrides:
-      - name: CPU_HOG_ENABLED
-        value: "true"
-
   llm:
     enabled: false
 
