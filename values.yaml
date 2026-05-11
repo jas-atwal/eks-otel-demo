@@ -1,18 +1,68 @@
 components:
-  cart:
-    resources:
-      limits:
-        memory: 20Mi
-  flagd:
-    enabled: true
   frontend-proxy:
     enabled: true
     service:
       type: LoadBalancer
+  
+  # SCENARIO: Cascading failures product-caralog service - affects frontend, checkout, recommendation, ad services
+  product-catalog:
+  resources:
+    limits:
+      memory: 8Mi
+
+  # SCENARIO: OOMKill cart service
   cart:
     resources:
       limits:
-        memory: 160Mi
+        memory: 20Mi
+
+  # SCENARIO: Bad image tag - ImagePullBackOff on recommendation service  
+  recommendation:
+    imageOverride:
+      tag: "broken-tag-does-not-exist"
+
+  # SCENARIO: CPU throttling on ad service
+  ad:
+    resources:
+      limits:
+        cpu: "10m"
+      requests:
+        cpu: "10m"
+
+  # SCENARIO: Bad liveness probe - CrashLoopBackOff on frontend service
+  frontend:
+    livenessProbe:
+      httpGet:
+        path: /this-does-not-exist
+        port: 8080
+      initialDelaySeconds: 10
+      periodSeconds: 5
+      failureThreshold: 3
+
+  # SCENARIO: Wrong env var - checkout can't reach shipping service
+  checkout:
+    envOverrides:
+      - name: SHIPPING_SERVICE_ADDR
+        value: "wrong-host:99999"
+  
+  # SCENARIO: Database Connection Failure - Point the adservice to a DB that doesn't exist
+  ad:
+    envOverrides:
+      - name: AD_SERVICE_DB_URL
+        value: "postgres://wrong-db:5432/ads"
+
+  # SCENARIO: Noisy Neighbor - recommendation hogs CPU starving other pods on same node
+  recommendation:
+    resources:
+      requests:
+        cpu: "2000m"
+      limits:
+        cpu: "4000m"
+    command:
+      - "/bin/sh"
+      - "-c"
+      - "yes > /dev/null & yes > /dev/null & python recommendation_server.py"
+
   llm:
     enabled: false
 
