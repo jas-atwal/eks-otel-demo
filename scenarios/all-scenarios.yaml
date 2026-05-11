@@ -6,9 +6,9 @@ components:
   
   # SCENARIO: Cascading failures product-caralog service - affects frontend, checkout, recommendation, ad services
   product-catalog:
-  resources:
-    limits:
-      memory: 8Mi
+    resources:
+      limits:
+        memory: 8Mi
 
   # SCENARIO: OOMKill cart service
   cart:
