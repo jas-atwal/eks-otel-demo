@@ -61,8 +61,8 @@ components:
       - name: SHIPPING_SERVICE_ADDR
         value: "wrong-host:99999"
 
-llm:
-  enabled: false
+  llm:
+    enabled: false
 
 grafana:
   enabled: false
