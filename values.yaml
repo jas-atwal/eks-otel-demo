@@ -18,6 +18,13 @@ components:
   llm:
     enabled: false
 
+prometheus:
+  server:
+    resources:
+      limits:
+        memory: 1Gi
+      requests:
+        memory: 1Gi
 grafana:
   enabled: false
 jaeger:
