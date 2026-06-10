@@ -24,12 +24,6 @@ jaeger:
   enabled: false
 opentelemetry-collector:
   enabled: true
-  config:
-    resources:
-      requests:
-        memory: 110Mi
-      limits:
-        memory: 200Mi
 opensearch:
   enabled: false
 
