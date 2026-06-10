@@ -9,6 +9,12 @@ components:
     resources:
       limits:
         memory: 160Mi
+  accounting:
+    resources:
+      requests:
+        memory: 128Mi
+      limits:
+        memory: 256Mi
   llm:
     enabled: false
 
@@ -21,9 +27,9 @@ opentelemetry-collector:
   config:
     resources:
       requests:
-        memory: "110Mi"
+        memory: 110Mi
       limits:
-        memory: "200Mi"
+        memory: 200Mi
 opensearch:
   enabled: false
 
