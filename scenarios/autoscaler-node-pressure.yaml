@@ -1,0 +1,71 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: scenario-autoscaler-node-pressure
+  namespace: otel-demo
+data:
+  description: "Heavy load on recommendation service + autoscaler trigger"
+  duration: "600"
+  expected_outcome: |
+    1. Recommendation service gets resource-constrained
+    2. Additional load pods consume remaining cluster resources
+    3. Cluster autoscaler detects unschedulable pods
+    4. New nodes launch
+    5. Pods migrate/reschedule
+    6. Service recovers as capacity increases
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: load-generator-autoscaler
+  namespace: otel-demo
+spec:
+  replicas: 8
+  selector:
+    matchLabels:
+      app: load-gen-autoscaler
+  template:
+    metadata:
+      labels:
+        app: load-gen-autoscaler
+    spec:
+      containers:
+      - name: stress
+        image: stress-ng:latest
+        args:
+          - "--cpu"
+          - "1"
+          - "--timeout"
+          - "600s"
+        resources:
+          requests:
+            cpu: "400m"
+            memory: "256Mi"
+          limits:
+            cpu: "400m"
+            memory: "256Mi"
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - otel-recommendation
+              topologyKey: kubernetes.io/hostname
+
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: load-gen-pdb
+  namespace: otel-demo
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app: load-gen-autoscaler
