@@ -63,7 +63,8 @@ components:
 
   llm:
     enabled: false
-
+prometheus:
+  enabled: false
 grafana:
   enabled: false
 jaeger:
