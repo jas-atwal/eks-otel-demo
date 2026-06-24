@@ -7,65 +7,88 @@ on:
         description: 'Scenarios to run (comma-separated)'
         default: 'cascading-productcatalog,oomkilled-cart,cpu-throttling-ad'
       duration_per_scenario:
-        description: 'Minutes to run each scenario'
+        description: 'Minutes per scenario'
         default: '10'
       revert_between:
-        description: 'Wait time before reverting (minutes)'
+        description: 'Wait minutes before reverting'
         default: '2'
+
+permissions:
+  contents: write
 
 jobs:
   playlist:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
       
-      - name: Setup
-        run: |
-          aws eks update-kubeconfig --name jas-eks-otel --region eu-west-2
-      
-      - name: Run Scenario Playlist
+      - name: 📋 Parse scenarios
+        id: parse
         run: |
           SCENARIOS="${{ inputs.scenarios }}"
+          echo "scenarios=$SCENARIOS" >> $GITHUB_OUTPUT
+          echo "🎬 Scenarios to run: $SCENARIOS"
+      
+      - name: 🎬 Run Scenario Playlist
+        run: |
+          SCENARIOS="${{ steps.parse.outputs.scenarios }}"
           IFS=',' read -ra SCENARIO_ARRAY <<< "$SCENARIOS"
           
           for scenario in "${SCENARIO_ARRAY[@]}"; do
-            echo ""
-            echo "🎬 Running: $scenario"
-            echo "========================================"
+            scenario=$(echo $scenario | xargs)  # trim whitespace
             
-            # Deploy scenario
+            echo ""
+            echo "════════════════════════════════════════"
+            echo "🎬 Scenario: $scenario"
+            echo "════════════════════════════════════════"
+            
+            # 1. Deploy scenario
+            echo "📤 Deploying $scenario..."
             cp scenarios/${scenario}.yaml values.yaml
+            
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
             git add values.yaml
             git commit -m "scenario: activate ${scenario}" || echo "No changes"
+            git pull --rebase origin main || git merge --no-edit origin/main
             git push origin main
             
-            # Wait for deployment
-            sleep 30
-            kubectl get pods -n otel-demo -o wide
-            
-            # Investigation time
+            # 2. Wait for ArgoCD to sync (give it 30 seconds)
             DURATION=$(((${{ inputs.duration_per_scenario }} * 60)))
+            echo ""
             echo "⏳ Scenario running for ${{ inputs.duration_per_scenario }} minutes..."
-            echo "📊 View in:"
-            echo "   - Komodor: https://app.komodor.com"
-            echo "   - Jaeger: https://jaeger.your-domain.com"
-            echo "   - Grafana: https://grafana.your-domain.com"
+            echo "📊 Monitor in:"
+            echo "   📈 Grafana:  https://grafana.your-domain.com"
+            echo "   🔍 Jaeger:   https://jaeger.your-domain.com"
+            echo "   🎯 Komodor:  https://app.komodor.com"
+            echo ""
+            
             sleep $DURATION
             
-            # Revert to baseline
+            # 3. Revert to baseline
             echo ""
             echo "🔄 Reverting to baseline..."
             cp scenarios/baseline.yaml values.yaml
             git add values.yaml
             git commit -m "revert: back to baseline after ${scenario}" || echo "No changes"
+            git pull --rebase origin main || git merge --no-edit origin/main
             git push origin main
             
-            # Wait for revert
+            # 4. Wait before next scenario
             REVERT_WAIT=$(((${{ inputs.revert_between }} * 60)))
+            echo "⏸️  Waiting ${{ inputs.revert_between }} minute(s) before next scenario..."
             sleep $REVERT_WAIT
             
             echo "✅ ${scenario} complete"
-            echo ""
           done
           
-          echo "🎬 All scenarios complete!"
+          echo ""
+          echo "════════════════════════════════════════"
+          echo "🎬 Playlist Complete!"
+          echo "════════════════════════════════════════"
+      
+      - name: 📢 Notify completion
+        run: |
+          echo "✅ All scenarios completed"
