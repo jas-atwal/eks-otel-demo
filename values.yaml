@@ -1,4 +1,12 @@
 components:
+  frontend:
+    livenessProbe:
+      httpGet:
+        path: /health
+        port: 8080
+      initialDelaySeconds: 10
+      periodSeconds: 5
+      failureThreshold: 3
   flagd:
     enabled: true
   frontend-proxy:
@@ -9,22 +17,9 @@ components:
     resources:
       limits:
         memory: 160Mi
-  accounting:
-    resources:
-      requests:
-        memory: 128Mi
-      limits:
-        memory: 256Mi
   llm:
     enabled: false
 
-prometheus:
-  server:
-    resources:
-      limits:
-        memory: 1Gi
-      requests:
-        memory: 1Gi
 grafana:
   enabled: false
 jaeger:
@@ -33,6 +28,3 @@ opentelemetry-collector:
   enabled: true
 opensearch:
   enabled: false
-
-
-
