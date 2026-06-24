@@ -17,8 +17,14 @@ components:
       limits:
         cpu: "200m"
         memory: "120Mi"
-  prometheus:
-    enabled: false"
+  # prometheus:
+  #   resources:
+  #     requests:
+  #       cpu: "200m"
+  #       memory: "300Mi"
+  #     limits:
+  #       cpu: "500m"
+  #       memory: "400Mi"
   llm:
     enabled: false
 
