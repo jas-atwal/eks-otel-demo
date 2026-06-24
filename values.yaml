@@ -1,8 +1,8 @@
 components:
-  checkout:
-    envOverrides:
-      - name: SHIPPING_SERVICE_ADDR
-        value: "http://shippingservices:8080"
+  product-catalog:
+    resources:
+      limits:
+        memory: 8Mi
   flagd:
     enabled: true
   frontend-proxy:
