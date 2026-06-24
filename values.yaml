@@ -1,12 +1,8 @@
 components:
-  frontend:
-    livenessProbe:
-      httpGet:
-        path: /health
-        port: 8080
-      initialDelaySeconds: 10
-      periodSeconds: 5
-      failureThreshold: 3
+  checkout:
+    envOverrides:
+      - name: SHIPPING_SERVICE_ADDR
+        value: "http://shippingservices:8080"
   flagd:
     enabled: true
   frontend-proxy:
@@ -19,7 +15,8 @@ components:
         memory: 160Mi
   llm:
     enabled: false
-
+prometheus:
+  enabled: false
 grafana:
   enabled: false
 jaeger:
