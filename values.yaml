@@ -1,4 +1,8 @@
 components:
+  cart:
+    resources:
+      limits:
+        memory: 20Mi
   flagd:
     enabled: true
   frontend-proxy:
@@ -9,14 +13,6 @@ components:
     resources:
       limits:
         memory: 160Mi
-  accounting:
-    resources:
-      requests:
-        cpu: "100m"
-        memory: "100Mi"
-      limits:
-        cpu: "200m"
-        memory: "120Mi"
   llm:
     enabled: false
 prometheus:
