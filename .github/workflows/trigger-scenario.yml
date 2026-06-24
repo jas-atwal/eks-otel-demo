@@ -17,6 +17,7 @@ on:
           - noisy-neighbour-recommedation
           - all-scenarios
           - baseline
+          - autoscaler-node-pressure
 
 permissions:
   contents: write
