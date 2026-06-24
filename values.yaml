@@ -1,12 +1,4 @@
 components:
-  frontend:
-    livenessProbe:
-      httpGet:
-        path: /health
-        port: 8080
-      initialDelaySeconds: 10
-      periodSeconds: 5
-      failureThreshold: 3
   flagd:
     enabled: true
   frontend-proxy:
