@@ -2,7 +2,7 @@ components:
   frontend:
     livenessProbe:
       httpGet:
-        path: /this-does-not-exist
+        path: /health
         port: 8080
       initialDelaySeconds: 10
       periodSeconds: 5

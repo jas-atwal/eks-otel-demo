@@ -1,7 +1,7 @@
 components:
   recommendation:
     imageOverride:
-      tag: "broken-tag-does-not-exist"
+      tag: "latests"
   flagd:
     enabled: true
   frontend-proxy:

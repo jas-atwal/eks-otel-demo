@@ -2,7 +2,7 @@ components:
   checkout:
     envOverrides:
       - name: SHIPPING_SERVICE_ADDR
-        value: "wrong-host:99999"
+        value: "http://shippingservices:8080"
   flagd:
     enabled: true
   frontend-proxy:
