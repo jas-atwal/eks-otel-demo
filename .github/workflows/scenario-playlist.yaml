@@ -8,7 +8,7 @@ on:
         default: 'cascading-productcatalog,oomkilled-cart,cpu-throttling-ad'
       duration_per_scenario:
         description: 'Minutes per scenario'
-        default: '10'
+        default: '5'
       revert_between:
         description: 'Wait minutes before reverting'
         default: '2'
