@@ -9,6 +9,22 @@ components:
     resources:
       limits:
         memory: 160Mi
+  accounting:
+    resources:
+      requests:
+        cpu: "100m"
+        memory: "100Mi"
+      limits:
+        cpu: "200m"
+        memory: "120Mi"
+  prometheus:
+    resources:
+      requests:
+        cpu: "200m"
+        memory: "300Mi"
+      limits:
+        cpu: "500m"
+        memory: "400Mi"
   llm:
     enabled: false
 
