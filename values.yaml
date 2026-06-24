@@ -16,18 +16,11 @@ components:
         memory: "100Mi"
       limits:
         cpu: "200m"
-        memory: "120Mi"
-  # prometheus:
-  #   resources:
-  #     requests:
-  #       cpu: "200m"
-  #       memory: "300Mi"
-  #     limits:
-  #       cpu: "500m"
-  #       memory: "400Mi"
+        memory: "120Mi" 
   llm:
     enabled: false
-
+prometheus:
+  enabled: false
 grafana:
   enabled: false
 jaeger:
