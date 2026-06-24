@@ -27,58 +27,23 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
-          fetch-depth: 0  # Get full history for rebase
-      
-      - name: 🔐 Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v2
-        with:
-          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/github-actions-role
-          aws-region: eu-west-2
-      
-      - name: 📝 Update kubeconfig
-        run: |
-          aws eks update-kubeconfig --name jas-eks-otel --region eu-west-2
+          fetch-depth: 0
       
       - name: 📋 Apply scenario
         run: |
           echo "Applying scenario: ${{ github.event.inputs.scenario }}"
           cp scenarios/${{ github.event.inputs.scenario }}.yaml values.yaml
-          cat values.yaml | head -20
       
-      - name: 💾 Commit and push with conflict handling
+      - name: 💾 Commit and push
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add values.yaml
-          
-          # Try to commit (skip if no changes)
           git commit -m "scenario: activate ${{ github.event.inputs.scenario }}" || echo "No changes to commit"
-          
-          # Pull remote changes first
-          git pull --rebase origin main || {
-            echo "Rebase failed, trying merge instead..."
-            git merge --no-edit origin/main
-          }
-          
-          # Now push
+          git pull --rebase origin main || git merge --no-edit origin/main
           git push origin main
       
-      - name: 🚀 Trigger ArgoCD sync
+      - name: ✅ Done
         run: |
-          kubectl patch application otel-demo \
-            -n argocd \
-            --type merge \
-            -p '{"spec":{"source":{"helm":{"valueFiles":["values.yaml"]}}}}'
-          
-          # Wait for ArgoCD to sync
-          sleep 10
-          argocd app sync otel-demo --force 2>/dev/null || echo "ArgoCD sync initiated"
-      
-      - name: 📊 Verify deployment
-        run: |
-          echo "=== Pod Status ==="
-          kubectl get pods -n otel-demo -o wide | head -20
-          
-          echo ""
-          echo "=== Recent Events ==="
-          kubectl get events -n otel-demo --sort-by='.lastTimestamp' | tail -10
+          echo "✅ Scenario committed: ${{ github.event.inputs.scenario }}"
+          echo "ArgoCD will auto-sync from the repo"
