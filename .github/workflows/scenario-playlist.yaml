@@ -1,0 +1,71 @@
+name: Scenario Playlist
+
+on:
+  workflow_dispatch:
+    inputs:
+      scenarios:
+        description: 'Scenarios to run (comma-separated)'
+        default: 'cascading-productcatalog,oomkilled-cart,cpu-throttling-ad'
+      duration_per_scenario:
+        description: 'Minutes to run each scenario'
+        default: '10'
+      revert_between:
+        description: 'Wait time before reverting (minutes)'
+        default: '2'
+
+jobs:
+  playlist:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Setup
+        run: |
+          aws eks update-kubeconfig --name jas-eks-otel --region eu-west-2
+      
+      - name: Run Scenario Playlist
+        run: |
+          SCENARIOS="${{ inputs.scenarios }}"
+          IFS=',' read -ra SCENARIO_ARRAY <<< "$SCENARIOS"
+          
+          for scenario in "${SCENARIO_ARRAY[@]}"; do
+            echo ""
+            echo "🎬 Running: $scenario"
+            echo "========================================"
+            
+            # Deploy scenario
+            cp scenarios/${scenario}.yaml values.yaml
+            git add values.yaml
+            git commit -m "scenario: activate ${scenario}" || echo "No changes"
+            git push origin main
+            
+            # Wait for deployment
+            sleep 30
+            kubectl get pods -n otel-demo -o wide
+            
+            # Investigation time
+            DURATION=$(((${{ inputs.duration_per_scenario }} * 60)))
+            echo "⏳ Scenario running for ${{ inputs.duration_per_scenario }} minutes..."
+            echo "📊 View in:"
+            echo "   - Komodor: https://app.komodor.com"
+            echo "   - Jaeger: https://jaeger.your-domain.com"
+            echo "   - Grafana: https://grafana.your-domain.com"
+            sleep $DURATION
+            
+            # Revert to baseline
+            echo ""
+            echo "🔄 Reverting to baseline..."
+            cp scenarios/baseline.yaml values.yaml
+            git add values.yaml
+            git commit -m "revert: back to baseline after ${scenario}" || echo "No changes"
+            git push origin main
+            
+            # Wait for revert
+            REVERT_WAIT=$(((${{ inputs.revert_between }} * 60)))
+            sleep $REVERT_WAIT
+            
+            echo "✅ ${scenario} complete"
+            echo ""
+          done
+          
+          echo "🎬 All scenarios complete!"
