@@ -2,7 +2,7 @@ components:
   ad:
     envOverrides:
       - name: AD_SERVICE_DB_URL
-        value: "postgres://wrong-db:5432/ads"
+        value: "postgres://adService:5432/ads"
   flagd:
     enabled: true
   frontend-proxy:
