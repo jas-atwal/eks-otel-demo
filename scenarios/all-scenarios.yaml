@@ -21,7 +21,8 @@ components:
     imageOverride:
       tag: "demo:2.2.0-recommendations"
 
-    # SCENARIO: Noisy Neighbor - recommendation hogs CPU starving other pods on same node
+  # SCENARIO: Noisy Neighbor - email hogs CPU starving other pods on same node
+  email:
     resources:
       requests:
         cpu: "2000m"
