@@ -14,7 +14,7 @@ on:
           - livenessprobe-frontend
           - wrong-envvar-checkout
           - dbconn-ad
-          - noisy-neighbour-recommedation
+          - noisy-neighbour-email
           - all-scenarios
           - baseline
           - autoscaler-node-pressure
