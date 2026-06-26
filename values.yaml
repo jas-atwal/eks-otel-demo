@@ -19,9 +19,10 @@ components:
   # SCENARIO: Bad image tag - ImagePullBackOff on recommendation service  
   recommendation:
     imageOverride:
-      tag: "broken-tag-does-not-exist"
+      tag: "demo:2.2.0-recommendations"
 
-    # SCENARIO: Noisy Neighbor - recommendation hogs CPU starving other pods on same node
+  # SCENARIO: Noisy Neighbor - email hogs CPU starving other pods on same node
+  email:
     resources:
       requests:
         cpu: "2000m"
@@ -49,7 +50,7 @@ components:
   frontend:
     livenessProbe:
       httpGet:
-        path: /this-does-not-exist
+        path: /health
         port: 8080
       initialDelaySeconds: 10
       periodSeconds: 5
@@ -59,7 +60,7 @@ components:
   checkout:
     envOverrides:
       - name: SHIPPING_SERVICE_ADDR
-        value: "wrong-host:99999"
+        value: "http://shippingservices:8080"
 
   llm:
     enabled: false
