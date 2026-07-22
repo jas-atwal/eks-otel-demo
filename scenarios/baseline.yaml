@@ -2,10 +2,9 @@ components:
   ad:
     resources:
       limits:
-        cpu: 150m 
-        memory: 300Mi
+        cpu: "150m"
       requests:
-        cpu: 100m
+        cpu: "100m"
   flagd:
     enabled: true
   frontend-proxy:
