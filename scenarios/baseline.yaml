@@ -1,5 +1,5 @@
 components:
-  adService:
+  ad:
     resources:
       limits:
         cpu: 150m 
