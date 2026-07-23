@@ -54,3 +54,18 @@ spec:
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
+      - RespectIgnoreDifferences=true
+      - ServerSideApply=true
+  ignoreDifferences:
+    - group: autoscaling
+      kind: HorizontalPodAutoscaler
+      managedFieldsManagers:
+        - komodor-rightsizing-controller
+    - group: keda.sh
+      kind: ScaledObject
+      managedFieldsManagers:
+        - komodor-rightsizing-controller
+    - group: apps
+      kind: Deployment
+      jsonPointers:
+        - /spec/replicas
