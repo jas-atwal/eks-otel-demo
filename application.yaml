@@ -7,40 +7,43 @@ metadata:
     argocd.argoproj.io/manifest-generate-paths: "."
 spec:
   project: default
-  source:
-    repoURL: https://open-telemetry.github.io/opentelemetry-helm-charts
-    chart: opentelemetry-demo
-    targetRevision: 0.40.5
-    helm:
-      valuesObject:
-        default:
-          podAnnotations:
-            git.repository: "https://github.com/jas-atwal/otel-argocd"
-            git.branch: "main"
-            argocd.argoproj.io/app-name: "otel-demo-prod"
+  sources:
+    - repoURL: https://open-telemetry.github.io/opentelemetry-helm-charts
+      chart: opentelemetry-demo
+      targetRevision: 0.40.5
+      helm:
+        valuesObject:
+          default:
+            podAnnotations:
+              git.repository: "https://github.com/jas-atwal/otel-argocd"
+              git.branch: "main"
+              argocd.argoproj.io/app-name: "otel-demo-prod"
 
-        components:
-          flagd:
+          components:
+            flagd:
+              enabled: true
+            frontend-proxy:
+              enabled: true
+              service:
+                type: LoadBalancer
+            cart:
+              resources:
+                limits:
+                  memory: 160Mi
+            llm:
+              enabled: false
+
+          grafana:
             enabled: true
-          frontend-proxy:
+          jaeger:
             enabled: true
-            service:
-              type: LoadBalancer
-          cart:
-            resources:
-              limits:
-                memory: 160Mi
-          llm:
+          opentelemetry-collector:
+            enabled: true
+          opensearch:
             enabled: false
-
-        grafana:
-          enabled: true
-        jaeger:
-          enabled: true
-        opentelemetry-collector:
-          enabled: true
-        opensearch:
-          enabled: false
+    - repoURL: https://github.com/jas-atwal/eks-otel-demo.git
+      targetRevision: main
+      path: keda
 
   destination:
     server: https://kubernetes.default.svc

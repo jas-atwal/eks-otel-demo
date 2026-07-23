@@ -1,0 +1,17 @@
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: checkout
+  namespace: otel-demo-prod
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: checkout
+  minReplicaCount: 1
+  maxReplicaCount: 3          # <-- adjust ceiling as appropriate
+  triggers:
+    - type: cpu
+      metricType: Utilization
+      metadata:
+        value: "10"
