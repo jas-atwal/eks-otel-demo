@@ -5,8 +5,10 @@ components:
         cpu: "150m"
       requests:
         cpu: "100m"
-  flagd:
-    enabled: true
+  checkout:
+    resources:
+      requests:
+        cpu: 100m
   frontend-proxy:
     enabled: true
     service:
@@ -23,6 +25,8 @@ components:
       limits:
         cpu: "200m"
         memory: "120Mi"
+  flagd:
+    enabled: true
   llm:
     enabled: false
 prometheus:
